@@ -106,3 +106,64 @@ const terminal = {
     }
   }
 };
+
+const canvas = document.getElementById("background-canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 100; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    radius: Math.random() * 2 + 1,
+    dx: Math.random() - 0.5,
+    dy: Math.random() - 0.5
+  });
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(0, 255, 0, 0.7)";
+  for (let p of particles) {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    p.x += p.dx;
+    p.y += p.dy;
+
+    if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+    if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+  }
+  requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
+
+document.getElementById("terminal-input").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    const input = e.target.value.trim();
+    e.target.value = "";
+
+    const output = document.createElement("div");
+    output.textContent = "❯ " + input;
+    document.getElementById("terminal-window").appendChild(output);
+
+    // Geheime Befehle
+    if (input === "unlock secrets") {
+      const secret = document.createElement("div");
+      secret.textContent = "✨ Geheimfunktion freigeschaltet! ✨";
+      secret.style.color = "lime";
+      document.getElementById("terminal-window").appendChild(secret);
+
+      document.body.classList.add("secret-mode");
+    }
+
+    // Auto-scroll
+    document.getElementById("terminal-window").scrollTop = document.getElementById("terminal-window").scrollHeight;
+  }
+});
