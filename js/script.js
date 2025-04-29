@@ -111,11 +111,28 @@ document.addEventListener('DOMContentLoaded', () => {
   terminal.init();
 
   // Musikplayer Setup
-  const audio = document.getElementById('bg-music');
+  const audio = document.getElementById('background-music');
   const volumeSlider = document.getElementById('volume-slider');
   const canvas = document.getElementById('eq-canvas');
   const ctx = canvas.getContext('2d');
 
+  audio.volume = 0.1;
+
+  const tryPlay = () => {
+    audio.play().catch(() => {
+      const resumeOnUserAction = () => {
+        audio.play();
+        document.removeEventListener('click', resumeOnUserAction);
+        document.removeEventListener('keydown', resumeOnUserAction);
+      };
+      document.addEventListener('click', resumeOnUserAction);
+      document.addEventListener('keydown', resumeOnUserAction);
+    });
+  };
+
+  tryPlay();
+
+  // Audio Context & Visualizer
   const audioCtx = new AudioContext();
   const source = audioCtx.createMediaElementSource(audio);
   const analyser = audioCtx.createAnalyser();
