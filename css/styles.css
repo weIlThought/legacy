@@ -123,8 +123,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
-  background: black;
+  z-index: -1; /* Wichtig: hinter alles andere */
+  pointer-events: none; /* Kein Blockieren von Eingaben */
 }
 
 .secret-mode {
