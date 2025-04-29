@@ -13,8 +13,7 @@ const terminal = {
 - contact: Kontaktlinks
 - clear: Terminal leeren
 - github: GitHub-Profil öffnen
-- date: Aktuelles Datum/Uhrzeit anzeigen
-- unlock secrets: 🔒`
+- date: Aktuelles Datum/Uhrzeit anzeigen`
     }),
     about: () => ({
       type: 'success',
@@ -27,15 +26,15 @@ const terminal = {
     contact: () => ({
       type: 'success',
       content: `📫 Links:
-- GitHub: https://github.com/jahmes
-- Discord: jahmes.dev`
+- GitHub: https://github.com/weilthought
+- Discord: j.c.`
     }),
     clear: () => {
       terminal.window.innerHTML = '';
       return null;
     },
     github: () => {
-      window.open('https://github.com/jahmes', '_blank');
+      window.open('https://github.com/weilthought', '_blank');
       return {
         type: 'system',
         content: 'Opening GitHub profile...'
@@ -46,7 +45,7 @@ const terminal = {
       content: new Date().toLocaleString()
     }),
     // Geheime Befehle
-    'unlock secrets': () => terminal.commands.secret(),
+    'unlock': () => terminal.commands.secret(),
     secret: () => {
       document.body.classList.add("secret-mode");
       return {
