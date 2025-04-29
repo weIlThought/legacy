@@ -146,3 +146,71 @@ body {
   color: #00ffcc;
   text-shadow: 0 0 5px #00ffcc;
 }
+
+.secret-mode body {
+  background: #111;
+  color: lime;
+}
+
+.matrix-effect {
+  background: black;
+  animation: matrix 5s infinite alternate;
+}
+
+.dark-theme {
+  background: #222;
+  color: #ddd;
+}
+
+.dark-theme .terminal {
+  background: #2a2a2a;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.dark-theme .terminal-line.system {
+  color: var(--orange);
+}
+
+.dark-theme .terminal-line.success {
+  color: var(--green);
+}
+
+.dark-theme .terminal-line.error {
+  color: var(--pink);
+}
+
+.matrix-effect .terminal-window {
+  background: black;
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
+}
+
+.matrix-effect .terminal-line {
+  color: #00ff00 !important;
+}
+
+@keyframes matrixScroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100vh; }
+}
+
+.matrix-effect {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 255, 0, 0.1) 0,
+    rgba(0, 255, 0, 0.1) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  animation: matrixScroll 2s linear infinite;
+}
+
+.terminal {
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-input-line {
+  margin-top: auto;
+  border-top: 1px solid #444;
+}

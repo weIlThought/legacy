@@ -108,13 +108,61 @@ const terminal = {
       }
     }
   },
+};
 
-  handleKeyUp(e) {
-    if (e.key === 'Tab') {
-      e.preventDefault();
+// Tab-Autocomplete (Fix: inputVal statt input)
+terminal.handleKeyUp = function (e) {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const inputVal = terminal.input.value.trim().toLowerCase();
+    const matches = Object.keys(terminal.commands).filter(cmd => cmd.startsWith(inputVal));
+    if (matches.length === 1) {
+      terminal.input.value = matches[0];
+    } else if (matches.length > 1) {
+      terminal.addLine('Mögliche Befehle: ' + matches.join(', '), 'system');
     }
   }
 };
+
+// Zusätzliche geheime Befehle
+terminal.commands.secret2 = () => {
+  const phrases = [
+    "Access granted. Welcome back, Operator.",
+    "Root access unlocked. Proceed with caution.",
+    "✨ Du hast den geheimen Pfad betreten.",
+    "🤖 KI-Modus aktiviert.",
+    "🕶️ Welcome to the matrix."
+  ];
+  const random = phrases[Math.floor(Math.random() * phrases.length)];
+  return {
+    type: 'success',
+    content: random
+  };
+};
+
+terminal.commands.secret3 = () => {
+  document.body.classList.add("matrix-effect");
+  setTimeout(() => {
+    document.body.classList.remove("matrix-effect");
+  }, 5000);
+  return {
+    type: 'success',
+    content: "💥 Matrix aktiviert (5 Sekunden)!"
+  };
+};
+
+terminal.commands.theme = () => {
+  document.body.classList.toggle("dark-theme");
+  return {
+    type: 'system',
+    content: "🎨 Theme gewechselt!"
+  };
+};
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
 
 // Partikel-Hintergrund
 const canvas = document.getElementById("background-canvas");
