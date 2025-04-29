@@ -52,6 +52,14 @@ const terminal = {
         type: 'success',
         content: "✨ Geheimfunktion freigeschaltet! Du hast das versteckte Feature entdeckt!"
       };
+    },
+    lock: () => {
+      document.body.classList.remove("secret-mode");
+      document.body.classList.remove("matrix-effect");
+      return {
+        type: 'system',
+        content: "🔒 Geheimmodus deaktiviert."
+      };
     }
   },
 
