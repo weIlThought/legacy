@@ -13,7 +13,8 @@ const terminal = {
 - contact: Kontaktlinks
 - clear: Terminal leeren
 - github: GitHub-Profil öffnen
-- date: Aktuelles Datum/Uhrzeit anzeigen`
+- date: Aktuelles Datum/Uhrzeit anzeigen
+- unlock secrets: 🔒`
     }),
     about: () => ({
       type: 'success',
@@ -43,7 +44,16 @@ const terminal = {
     date: () => ({
       type: 'system',
       content: new Date().toLocaleString()
-    })
+    }),
+    // Geheime Befehle
+    'unlock secrets': () => terminal.commands.secret(),
+    secret: () => {
+      document.body.classList.add("secret-mode");
+      return {
+        type: 'success',
+        content: "✨ Geheimfunktion freigeschaltet! Du hast das versteckte Feature entdeckt!"
+      };
+    }
   },
 
   init() {
@@ -107,6 +117,7 @@ const terminal = {
   }
 };
 
+// Partikel-Hintergrund
 const canvas = document.getElementById("background-canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
@@ -140,30 +151,9 @@ function animateParticles() {
   }
   requestAnimationFrame(animateParticles);
 }
-
 animateParticles();
 
-
-document.getElementById("terminal-input").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") {
-    const input = e.target.value.trim();
-    e.target.value = "";
-
-    const output = document.createElement("div");
-    output.textContent = "❯ " + input;
-    document.getElementById("terminal-window").appendChild(output);
-
-    // Geheime Befehle
-    if (input === "unlock secrets") {
-      const secret = document.createElement("div");
-      secret.textContent = "✨ Geheimfunktion freigeschaltet! ✨";
-      secret.style.color = "lime";
-      document.getElementById("terminal-window").appendChild(secret);
-
-      document.body.classList.add("secret-mode");
-    }
-
-    // Auto-scroll
-    document.getElementById("terminal-window").scrollTop = document.getElementById("terminal-window").scrollHeight;
-  }
+// Terminal starten
+window.addEventListener("DOMContentLoaded", () => {
+  terminal.init();
 });
