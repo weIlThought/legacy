@@ -5,11 +5,11 @@ const terminal = {
   historyIndex: -1,
   journalUnlocked: false,
   journalContent: '',
+  currentLanguage: 'de', // Standard ist Deutsch
 
-  commands: {
-    help: () => ({
-      type: 'system',
-      content: `Verfügbare Befehle:
+  translations: {
+    de: {
+      help: `Verfügbare Befehle:
 - help: Diese Hilfe anzeigen
 - about: Über Jahmes
 - skills: Technisches Profil
@@ -17,22 +17,54 @@ const terminal = {
 - clear: Terminal leeren
 - github: GitHub-Profil öffnen
 - journal: 🔐 Tagebuch anzeigen (Passwort nötig)
-- theme: Dark/Light Theme wechseln`
+- theme: Dark/Light Theme wechseln
+- language: Sprache wechseln (Deutsch/Englisch)`,
+      about: "Ich bin Jahmes – Hobby Programmierer mit Fokus auf Performance, Automatisierung und kreative Werkzeuge.",
+      skills: "Python, JavaScript, HTML, CSS, LUA.",
+      contact: `📫 GitHub: https://github.com/weilthought\n📧 Discord: j.c.`,
+      unknownCommand: `Unbekannter Befehl:`,
+      deactivated: "Sprache auf Deutsch gewechselt.",
+      activated: "Language switched to English."
+    },
+    en: {
+      help: `Available commands:
+- help: Show this help
+- about: About Jahmes
+- skills: Technical profile
+- contact: Contact information
+- clear: Clear terminal
+- github: Open GitHub profile
+- journal: 🔐 View journal (Password required)
+- theme: Switch Dark/Light theme
+- language: Change language (German/English)`,
+      about: "I am Jahmes – a hobby programmer focused on performance, automation, and creative tools.",
+      skills: "Python, JavaScript, HTML, CSS, LUA.",
+      contact: `📫 GitHub: https://github.com/weilthought\n📧 Discord: j.c.`,
+      unknownCommand: `Unknown command:`,
+      deactivated: "Sprache auf Deutsch gewechselt.",
+      activated: "Sprache auf Englisch gewechselt."
+    }
+  },
+
+  commands: {
+    help: () => ({
+      type: 'system',
+      content: terminal.translations[terminal.currentLanguage].help
     }),
 
     about: () => ({
       type: 'success',
-      content: "Ich bin Jahmes – Hobby Programmierer mit Fokus auf Performance, Automatisierung und kreative Werkzeuge."
+      content: terminal.translations[terminal.currentLanguage].about
     }),
 
     skills: () => ({
       type: 'success',
-      content: "Python, JavaScript, HTML, CSS, LUA."
+      content: terminal.translations[terminal.currentLanguage].skills
     }),
 
     contact: () => ({
       type: 'success',
-      content: `📫 GitHub: https://github.com/weilthought\n📧 Discord: j.c.`
+      content: terminal.translations[terminal.currentLanguage].contact
     }),
 
     clear: () => {
@@ -44,7 +76,7 @@ const terminal = {
       window.open('https://github.com/weilthought', '_blank');
       return {
         type: 'system',
-        content: 'Öffne GitHub-Profil...'
+        content: terminal.translations[terminal.currentLanguage].github
       };
     },
 
@@ -64,22 +96,53 @@ const terminal = {
         };
       }
 
-      const password = prompt("🔐 Bitte Passwort für Tagebuch eingeben:");
-      if (!password) return { type: 'error', content: 'Kein Passwort eingegeben.' };
+      const passwordModal = document.getElementById('password-modal');
+      const passwordInput = document.getElementById('password-input');
+      const submitPasswordBtn = document.getElementById('submit-password');
+      const closeModalBtn = document.getElementById('close-modal');
 
-      terminal.addLine('⏳ Entschlüsselung läuft...', 'system');
-      try {
-        const res = await fetch('journal.encrypted');
-        const encryptedBase64 = await res.text();
-        const content = await decryptData(encryptedBase64, password);
-        terminal.journalUnlocked = true;
-        terminal.journalContent = content;
-        return {
-          type: 'success',
-          content: content
-        };
-      } catch (e) {
-        return { type: 'error', content: '❌ Entschlüsselung fehlgeschlagen.' };
+      function openPasswordModal() {
+        passwordModal.style.display = 'flex';
+      }
+
+      function closePasswordModal() {
+        passwordModal.style.display = 'none';
+      }
+
+      submitPasswordBtn.addEventListener('click', async () => {
+        const enteredPassword = passwordInput.value;
+        if (enteredPassword) {
+          terminal.addLine('⏳ Entschlüsselung läuft...', 'system');
+          try {
+            const res = await fetch('journal.encrypted');
+            const encryptedBase64 = await res.text();
+            const content = await decryptData(encryptedBase64, enteredPassword);
+            terminal.journalUnlocked = true;
+            terminal.journalContent = content;
+            terminal.addLine(content, 'success');
+            closePasswordModal();
+          } catch (e) {
+            terminal.addLine('❌ Entschlüsselung fehlgeschlagen.', 'error');
+            closePasswordModal();
+          }
+        } else {
+          alert("Bitte Passwort eingeben.");
+        }
+      });
+
+      closeModalBtn.addEventListener('click', closePasswordModal);
+
+      openPasswordModal();
+    },
+
+    language: () => {
+      // Wechsel zwischen Deutsch und Englisch
+      if (terminal.currentLanguage === 'de') {
+        terminal.currentLanguage = 'en';
+        terminal.addLine(terminal.translations.en.activated, 'system');
+      } else {
+        terminal.currentLanguage = 'de';
+        terminal.addLine(terminal.translations.de.deactivated, 'system');
       }
     }
   },
@@ -115,7 +178,7 @@ const terminal = {
             this.addLine(result.content, result.type);
           }
         } else {
-          this.addLine(`Unbekannter Befehl: ${command}`, 'error');
+          this.addLine(`${terminal.translations[terminal.currentLanguage].unknownCommand}: ${command}`, 'error');
         }
       }
       this.input.value = '';
@@ -151,6 +214,7 @@ const terminal = {
   }
 };
 
+// Canvas für Animationen
 const canvas = document.getElementById("background-canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
