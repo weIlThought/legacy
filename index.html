@@ -29,8 +29,14 @@
       <div id="terminal-window" class="terminal-window">
       </div>
       <div class="terminal-input-line">
-        <span class="prompt">❯
-        </span>
+        <div id="password-modal" class="modal">
+          <div class="modal-content">
+            <h2>🔐 Bitte Passwort eingeben</h2>
+            <input type="password" id="password-input" placeholder="Passwort eingeben" />
+            <button id="submit-password">Bestätigen</button>
+            <button id="close-modal">Abbrechen</button>
+          </div>
+        </div>
         <input type="text" id="terminal-input" autofocus>
       </div>
     </div>
