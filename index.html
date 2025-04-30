@@ -4,28 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jahmes Terminal</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/png" href="favicon.png">
   <script src="crypto.js"></script>
 </head>
 <body>
-  <canvas id="background-canvas"></canvas>
+  <canvas id="background-canvas">
+
+  </canvas>
   <div class="layout">
     <div class="terminal">
       <div class="terminal-header">
         <div class="dots">
-          <div class="dot red"></div>
-          <div class="dot yellow"></div>
-          <div class="dot green"></div>
+          <div class="dot red">
+          </div>
+          <div class="dot yellow">
+          </div>
+          <div class="dot green">
+          </div>
         </div>
-        <div class="terminal-title">Jahmes-Terminal</div>
+        <div class="terminal-title">gast@Jahmes:~$
+        </div>
       </div>
-      <div id="terminal-window" class="terminal-window"></div>
+      <div id="terminal-window" class="terminal-window">
+      </div>
       <div class="terminal-input-line">
-        <span class="prompt">❯</span>
-        <input id="terminal-input" autocomplete="off" />
+        <span class="prompt">❯
+        </span>
+        <input type="text" id="terminal-input" autofocus>
       </div>
     </div>
   </div>
-  <script src="script.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
