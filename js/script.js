@@ -3,70 +3,96 @@ const terminal = {
   window: document.getElementById('terminal-window'),
   history: [],
   historyIndex: -1,
+  journalUnlocked: false,
+  journalContent: '',
 
   commands: {
     help: () => ({
       type: 'system',
-      content: `Available commands:
-- about: Info über Jahmes
-- skills: Technische Fähigkeiten anzeigen
-- contact: Kontaktlinks
+      content: `Verfügbare Befehle:
+- help: Diese Hilfe anzeigen
+- about: Über Jahmes
+- skills: Technisches Profil
+- contact: Kontaktinformationen
 - clear: Terminal leeren
 - github: GitHub-Profil öffnen
-- date: Aktuelles Datum/Uhrzeit anzeigen`
+- date: Datum und Uhrzeit
+- journal: 🔐 Tagebuch anzeigen (Passwort nötig)
+- theme: Dark/Light Theme wechseln`
     }),
+
     about: () => ({
       type: 'success',
-      content: "Hi, ich bin Jahmes – ein kreativer Entwickler mit Fokus auf Performance, Tools und Automatisierung. Schau dir meine Skills an oder connecte dich über 'contact'."
+      content: "Ich bin Jahmes – Entwickler mit Fokus auf Performance, Automatisierung und kreative Werkzeuge."
     }),
+
     skills: () => ({
       type: 'success',
-      content: "CI/CD, Cloud, Container, Frontend ✨ – mehr auf GitHub!"
+      content: "CI/CD, Cloud, Container, Frontend, Backend – Komplettlösung von Idee bis Deployment."
     }),
+
     contact: () => ({
       type: 'success',
-      content: `📫 Links:
-- GitHub: https://github.com/weilthought
-- Discord: j.c.`
+      content: `📫 GitHub: https://github.com/weilthought\n📧 Discord: j.c.`
     }),
+
     clear: () => {
       terminal.window.innerHTML = '';
       return null;
     },
+
     github: () => {
       window.open('https://github.com/weilthought', '_blank');
       return {
         type: 'system',
-        content: 'Opening GitHub profile...'
+        content: 'Öffne GitHub-Profil...'
       };
     },
+
     date: () => ({
       type: 'system',
-      content: new Date().toLocaleString()
+      content: new Date().toLocaleString('de-DE')
     }),
-    // Geheime Befehle
-    'unlock': () => terminal.commands.secret(),
-    secret: () => {
-      document.body.classList.add("secret-mode");
-      return {
-        type: 'success',
-        content: "✨ Geheimfunktion freigeschaltet! Du hast das versteckte Feature entdeckt!"
-      };
-    },
-    lock: () => {
-      document.body.classList.remove("secret-mode");
-      document.body.classList.remove("matrix-effect");
+
+    theme: () => {
+      document.body.classList.toggle("dark-theme");
       return {
         type: 'system',
-        content: "🔒 Geheimmodus deaktiviert."
+        content: "🎨 Theme gewechselt."
       };
+    },
+
+    journal: async () => {
+      if (terminal.journalUnlocked) {
+        return {
+          type: 'success',
+          content: terminal.journalContent
+        };
+      }
+
+      const password = prompt("🔐 Bitte Passwort für Tagebuch eingeben:");
+      if (!password) return { type: 'error', content: 'Kein Passwort eingegeben.' };
+
+      terminal.addLine('⏳ Entschlüsselung läuft...', 'system');
+      try {
+        const res = await fetch('journal.encrypted');
+        const encryptedBase64 = await res.text();
+        const content = await decryptData(encryptedBase64, password);
+        terminal.journalUnlocked = true;
+        terminal.journalContent = content;
+        return {
+          type: 'success',
+          content: content
+        };
+      } catch (e) {
+        return { type: 'error', content: '❌ Entschlüsselung fehlgeschlagen.' };
+      }
     }
   },
 
   init() {
     this.addLine('Willkommen im Terminal von Jahmes 👨‍💻', 'system');
-    this.addLine('Tippe "help" für Optionen', 'system');
-
+    this.addLine('Gib "help" ein für eine Liste verfügbarer Befehle.', 'system');
     this.input.addEventListener('keydown', this.handleInput.bind(this));
     this.input.addEventListener('keyup', this.handleKeyUp.bind(this));
   },
@@ -82,7 +108,6 @@ const terminal = {
   handleInput(e) {
     if (e.key === 'Enter') {
       const command = this.input.value.trim().toLowerCase();
-
       if (command) {
         this.addLine(`❯ ${command}`);
         this.history.push(command);
@@ -90,14 +115,15 @@ const terminal = {
 
         if (this.commands[command]) {
           const result = this.commands[command]();
-          if (result) {
+          if (result instanceof Promise) {
+            result.then(r => r && this.addLine(r.content, r.type));
+          } else if (result) {
             this.addLine(result.content, result.type);
           }
         } else {
           this.addLine(`Unbekannter Befehl: ${command}`, 'error');
         }
       }
-
       this.input.value = '';
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -116,63 +142,21 @@ const terminal = {
       }
     }
   },
-};
 
-// Tab-Autocomplete (Fix: inputVal statt input)
-terminal.handleKeyUp = function (e) {
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    const inputVal = terminal.input.value.trim().toLowerCase();
-    const matches = Object.keys(terminal.commands).filter(cmd => cmd.startsWith(inputVal));
-    if (matches.length === 1) {
-      terminal.input.value = matches[0];
-    } else if (matches.length > 1) {
-      terminal.addLine('Mögliche Befehle: ' + matches.join(', '), 'system');
+  handleKeyUp(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const inputVal = terminal.input.value.trim().toLowerCase();
+      const matches = Object.keys(terminal.commands).filter(cmd => cmd.startsWith(inputVal));
+      if (matches.length === 1) {
+        terminal.input.value = matches[0];
+      } else if (matches.length > 1) {
+        terminal.addLine('Mögliche Befehle: ' + matches.join(', '), 'system');
+      }
     }
   }
 };
 
-// Zusätzliche geheime Befehle
-terminal.commands.secret2 = () => {
-  const phrases = [
-    "Access granted. Welcome back, Operator.",
-    "Root access unlocked. Proceed with caution.",
-    "✨ Du hast den geheimen Pfad betreten.",
-    "🤖 KI-Modus aktiviert.",
-    "🕶️ Welcome to the matrix."
-  ];
-  const random = phrases[Math.floor(Math.random() * phrases.length)];
-  return {
-    type: 'success',
-    content: random
-  };
-};
-
-terminal.commands.secret3 = () => {
-  document.body.classList.add("matrix-effect");
-  setTimeout(() => {
-    document.body.classList.remove("matrix-effect");
-  }, 5000);
-  return {
-    type: 'success',
-    content: "💥 Matrix aktiviert (5 Sekunden)!"
-  };
-};
-
-terminal.commands.theme = () => {
-  document.body.classList.toggle("dark-theme");
-  return {
-    type: 'system',
-    content: "🎨 Theme gewechselt!"
-  };
-};
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-
-// Partikel-Hintergrund
 const canvas = document.getElementById("background-canvas");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
@@ -180,7 +164,7 @@ canvas.height = window.innerHeight;
 
 let particles = [];
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 80; i++) {
   particles.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
@@ -197,10 +181,8 @@ function animateParticles() {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
     ctx.fill();
-
     p.x += p.dx;
     p.y += p.dy;
-
     if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
     if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
   }
@@ -208,7 +190,11 @@ function animateParticles() {
 }
 animateParticles();
 
-// Terminal starten
 window.addEventListener("DOMContentLoaded", () => {
   terminal.init();
+});
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 });
