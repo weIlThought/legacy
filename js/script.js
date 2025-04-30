@@ -16,19 +16,18 @@ const terminal = {
 - contact: Kontaktinformationen
 - clear: Terminal leeren
 - github: GitHub-Profil öffnen
-- date: Datum und Uhrzeit
 - journal: 🔐 Tagebuch anzeigen (Passwort nötig)
 - theme: Dark/Light Theme wechseln`
     }),
 
     about: () => ({
       type: 'success',
-      content: "Ich bin Jahmes – Entwickler mit Fokus auf Performance, Automatisierung und kreative Werkzeuge."
+      content: "Ich bin Jahmes – Hobby Programmierer mit Fokus auf Performance, Automatisierung und kreative Werkzeuge."
     }),
 
     skills: () => ({
       type: 'success',
-      content: "CI/CD, Cloud, Container, Frontend, Backend – Komplettlösung von Idee bis Deployment."
+      content: "Python, JavaScript, HTML, CSS, LUA."
     }),
 
     contact: () => ({
@@ -48,11 +47,6 @@ const terminal = {
         content: 'Öffne GitHub-Profil...'
       };
     },
-
-    date: () => ({
-      type: 'system',
-      content: new Date().toLocaleString('de-DE')
-    }),
 
     theme: () => {
       document.body.classList.toggle("dark-theme");
