@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
 :root {
-  --bg: #11131a;
+  --bg: #000000;
   --green: #9fe870;
   --pink: #ff61d8;
   --blue: #67b5fa;
@@ -18,7 +18,7 @@ body {
   background: var(--bg);
   display: flex;
   place-content: center;
-  align-items: center; /* Vertikale und horizontale Zentrierung */
+  align-items: center;
   font-family: 'Fira Code', monospace;
   overflow-x: hidden;
 }
@@ -27,7 +27,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Vertikale Zentrierung */
+  justify-content: center;
   gap: 2rem;
   padding: 2rem;
   width: 100vw;
@@ -42,18 +42,39 @@ body {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
-  width: 85%; /* Breitere Terminal-Darstellung */
-  max-width: 1000px; /* Maximale Breite des Terminals */
-  height: 50vh; /* Höheres Terminal */
+  width: 85%;
+  max-width: 1000px;
+  height: 50vh;
 }
 
 .terminal-header {
   background: #2b2f3b;
-  padding: 0.5rem;
+  padding: 4px 8px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   display: flex;
   align-items: center;
+  border-bottom: 2px solid #444;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#terminal-header {
+  display: flex;
+  justify-content: space-between;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-family: monospace;
+  padding: 4px 8px;
+  background: #2b2f3b;
+  border-bottom: 2px solid #444;
+}
+
+.terminal-header {
+  background: #2b2f3b;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid #444;
 }
 
 .dots {
@@ -74,7 +95,7 @@ body {
 
 .terminal-title {
   color: var(--cyan);
-  margin-left: 1rem;
+  margin-left: 0.5rem;
   font-size: 0.9rem;
 }
 
@@ -123,8 +144,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Wichtig: hinter alles andere */
-  pointer-events: none; /* Kein Blockieren von Eingaben */
+  z-index: -1;
+  pointer-events: none;
 }
 
 .secret-mode {
@@ -245,4 +266,9 @@ body {
 button {
   padding: 10px 20px;
   margin: 5px;
+}
+
+#viewer-counter {
+  margin-left: 12px;
+  font-size: 1rem;
 }

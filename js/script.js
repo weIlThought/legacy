@@ -248,10 +248,6 @@ function animateParticles() {
 }
 animateParticles();
 
-window.addEventListener("DOMContentLoaded", () => {
-  terminal.init();
-});
-
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -270,7 +266,7 @@ function updateLocalViewerCounter() {
   }
 
   const counterEl = document.getElementById('viewer-counter');
-  if (counterEl) counterEl.textContent = `👁️ ${count}`;
+  if (counterEl) counterEl.textContent = `${count}👁️`;
 }
 
 window.addEventListener("DOMContentLoaded", () => {

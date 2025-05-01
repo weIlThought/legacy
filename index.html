@@ -9,26 +9,21 @@
   <script src="crypto.js"></script>
 </head>
 <body>
-  <canvas id="background-canvas">
-
-  </canvas>
+  <canvas id="background-canvas"></canvas>
   <div class="layout">
     <div class="terminal">
-      <div class="terminal-header">
-        <span id="viewer-counter" style="float: right;">👁️ ...</span>
-        <div class="dots">
-          <div class="dot red">
+      <div id="terminal-header">
+        <div style="display: flex; align-items: center;">
+          <div class="dots" style="display: flex; margin-right: 4px;">
+            <div class="dot red"></div>
+            <div class="dot yellow"></div>
+            <div class="dot green"></div>
           </div>
-          <div class="dot yellow">
-          </div>
-          <div class="dot green">
-          </div>
+          <div class="terminal-title">gast@Jahmes:~$</div>
         </div>
-        <div class="terminal-title">gast@Jahmes:~$
-        </div>
+        <span id="viewer-counter" style="margin-left: 12px;"></span>
       </div>
-      <div id="terminal-window" class="terminal-window">
-      </div>
+      <div id="terminal-window" class="terminal-window"></div>
       <div class="terminal-input-line">
         <div id="password-modal" class="modal">
           <div class="modal-content">
