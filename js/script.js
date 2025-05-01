@@ -256,3 +256,24 @@ window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
+
+function updateLocalViewerCounter() {
+  const counterKey = 'jahmes-visitor-counter';
+  const uniqueKey = 'jahmes-visitor-unique';
+
+  let count = parseInt(localStorage.getItem(counterKey) || '0');
+
+  if (!localStorage.getItem(uniqueKey)) {
+    count++;
+    localStorage.setItem(counterKey, count);
+    localStorage.setItem(uniqueKey, 'true');
+  }
+
+  const counterEl = document.getElementById('viewer-counter');
+  if (counterEl) counterEl.textContent = `👁️ ${count}`;
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  terminal.init();
+  updateLocalViewerCounter();
+});
