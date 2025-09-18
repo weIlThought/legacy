@@ -257,18 +257,7 @@ body {
   text-align: center;
 }
 
-#password-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
 button {
   padding: 10px 20px;
   margin: 5px;
-}
-
-#viewer-counter {
-  margin-left: 12px;
-  font-size: 1rem;
 }

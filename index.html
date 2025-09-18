@@ -1,42 +1,30 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jahmes Terminal</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <script src="crypto.js"></script>
-</head>
-<body>
-  <canvas id="background-canvas"></canvas>
-  <div class="layout">
-    <div class="terminal">
-      <div id="terminal-header">
-        <div style="display: flex; align-items: center;">
-          <div class="dots" style="display: flex; margin-right: 4px;">
-            <div class="dot red"></div>
-            <div class="dot yellow"></div>
-            <div class="dot green"></div>
-          </div>
-          <div class="terminal-title">gast@Jahmes:~$</div>
-        </div>
-        <span id="viewer-counter" style="margin-left: 12px;"></span>
-      </div>
-      <div id="terminal-window" class="terminal-window"></div>
-      <div class="terminal-input-line">
-        <div id="password-modal" class="modal">
-          <div class="modal-content">
-            <h2>🔐 Bitte Passwort eingeben</h2>
-            <input type="password" id="password-input" placeholder="Passwort eingeben" />
-            <button id="submit-password">Bestätigen</button>
-            <button id="close-modal">Abbrechen</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jahmes Terminal</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <script src="crypto.js"></script>
+  </head>
+  <body>
+    <canvas id="background-canvas"></canvas>
+    <div class="layout">
+      <div class="terminal">
+        <div id="terminal-header">
+          <div style="display: flex; align-items: center">
+            <div class="dots" style="display: flex; margin-right: 4px">
+              <div class="dot red"></div>
+              <div class="dot yellow"></div>
+              <div class="dot green"></div>
+            </div>
+            <div class="terminal-title">gast@Jahmes:~$</div>
           </div>
         </div>
-        <input type="text" id="terminal-input" autofocus>
+        <div id="terminal-window" class="terminal-window"></div>
       </div>
     </div>
-  </div>
-  <script src="js/script.js"></script>
-</body>
+    <script src="js/script.js"></script>
+  </body>
 </html>
