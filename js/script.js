@@ -167,13 +167,20 @@ const terminal = {
     if (e.key === "Tab") {
       e.preventDefault();
       const inputVal = terminal.input.value.trim().toLowerCase();
-      const matches = Object.keys(terminal.commands).filter((cmd) =>
-        cmd.startsWith(inputVal)
-      );
+      if (!inputVal) return;
+
+      const commands = Object.keys(terminal.commands);
+      const matches = commands.filter((cmd) => cmd.startsWith(inputVal));
+
       if (matches.length === 1) {
         terminal.input.value = matches[0];
       } else if (matches.length > 1) {
-        terminal.addLine("Mögliche Befehle: " + matches.join(", "), "system");
+        // Prüfe, ob die letzte Zeile schon Vorschläge war, um Dopplung zu vermeiden
+        const lastLine = terminal.window.lastChild;
+        const msg = "Mögliche Befehle: " + matches.join(", ");
+        if (!lastLine || lastLine.textContent !== msg) {
+          terminal.addLine(msg, "system");
+        }
       }
     }
   },
