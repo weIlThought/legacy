@@ -11,7 +11,7 @@ const terminal = {
     de: {
       help: `Verfügbare Befehle:
 - help: Diese Hilfe anzeigen
-- about: Über Jahmes
+- about: Über Dennis
 - skills: Technisches Profil
 - contact: Kontaktinformationen
 - clear: Terminal leeren
@@ -20,7 +20,7 @@ const terminal = {
 - theme: Dark/Light Theme wechseln
 - language: Sprache wechseln (Deutsch/Englisch)`,
       about:
-        "Ich bin Jahmes – Hobby Programmierer mit Fokus auf Performance, Automatisierung und kreative Werkzeuge.",
+        "Ich bin Dennis – Hobby Programmierer mit Fokus auf Performance, Automatisierung und kreative Werkzeuge.",
       skills: "Python, JavaScript, HTML, CSS, LUA.",
       contact: `📫 GitHub: https://github.com/weilthought\n📧 Discord: j.c.`,
       unknownCommand: `Unbekannter Befehl:`,
@@ -30,7 +30,7 @@ const terminal = {
     en: {
       help: `Available commands:
 - help: Show this help
-- about: About Jahmes
+- about: About Dennis
 - skills: Technical profile
 - contact: Contact information
 - clear: Clear terminal
@@ -39,7 +39,7 @@ const terminal = {
 - theme: Switch Dark/Light theme
 - language: Change language (German/English)`,
       about:
-        "I am Jahmes – a hobby programmer focused on performance, automation, and creative tools.",
+        "I am Dennis – a hobby programmer focused on performance, automation, and creative tools.",
       skills: "Python, JavaScript, HTML, CSS, LUA.",
       contact: `📫 GitHub: https://github.com/weilthought\n📧 Discord: j.c.`,
       unknownCommand: `Unknown command:`,
@@ -103,7 +103,7 @@ const terminal = {
   },
 
   init() {
-    this.addLine("Willkommen im Terminal von Jahmes 👨‍💻", "system");
+    this.addLine("Willkommen im Terminal von Dennis 👨‍💻", "system");
     this.addLine(
       'Gib "help" ein für eine Liste verfügbarer Befehle.',
       "system"
