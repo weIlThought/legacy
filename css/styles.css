@@ -106,6 +106,28 @@ body {
   color: var(--text);
   font-size: 0.9rem;
   line-height: 1.4;
+  scrollbar-width: thin;
+  scrollbar-color: #222 #181818;
+  border-radius: 10px;
+}
+
+/* Für Chrome, Edge, Safari */
+.terminal-window::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+  background: #181818;
+}
+
+.terminal-window::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 10px;
+}
+
+.terminal-window::-webkit-scrollbar-track {
+  background: #181818;
+  border-radius: 10px;
+  box-shadow: none;
+  border: none;
 }
 
 .terminal-input-line {
