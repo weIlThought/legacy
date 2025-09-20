@@ -187,6 +187,14 @@ canvas.height = window.innerHeight;
 
 let particles = [];
 
+function randomColor() {
+  // Erzeugt eine zufällige RGB-Farbe
+  const r = Math.floor(Math.random() * 200) + 55;
+  const g = Math.floor(Math.random() * 200) + 55;
+  const b = Math.floor(Math.random() * 200) + 55;
+  return `rgba(${r},${g},${b},0.7)`;
+}
+
 for (let i = 0; i < 80; i++) {
   particles.push({
     x: Math.random() * canvas.width,
@@ -194,15 +202,16 @@ for (let i = 0; i < 80; i++) {
     radius: Math.random() * 2 + 1,
     dx: Math.random() - 0.5,
     dy: Math.random() - 0.5,
+    color: randomColor(), // Jede Kugel bekommt eine eigene Farbe
   });
 }
 
 function animateParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "rgba(0, 255, 0, 0.7)";
   for (let p of particles) {
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    ctx.fillStyle = p.color; // Jede Kugel wird bunt gezeichnet
     ctx.fill();
     p.x += p.dx;
     p.y += p.dy;
